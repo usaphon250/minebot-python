@@ -2,7 +2,7 @@ import socket, struct, uuid, zlib, time
 import read_varint_helper, packet_builder
 import logging
 
-HOST = "192.168.1.22"
+HOST = "127.0.0.1"
 PORT = 25565
 PROTOCOL_VERSION = 770
 BOT_USERNAME = "MiniBOT"
