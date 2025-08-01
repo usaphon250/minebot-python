@@ -60,26 +60,3 @@ def read_bytes_from_buffer(data: bytes, offset: int, length: int) -> tuple[bytes
     value = data[offset : offset + length]
     return value, offset + length
 
-
-def text_component_to_plain_text(tc: dict | list | str) -> str:
-    """JSON形式のText Componentを、隠れた情報も含めてプレーンテキストに変換する"""
-    if isinstance(tc, str):
-        return tc
-    if isinstance(tc, list):
-        return "".join(text_component_to_plain_text(item) for item in tc)
-    if isinstance(tc, dict):
-        # 表示テキスト、追加テキスト、ホバーイベントの中身など、
-        # テキストが含まれる可能性のある全てのキーを探索する
-        text = ""
-        if "text" in tc:
-            text += tc["text"]
-        if "extra" in tc:
-            text += text_component_to_plain_text(tc["extra"])
-        if "hoverEvent" in tc and "contents" in tc["hoverEvent"]:
-            # hoverEventの中(nameキー)にフルネームが含まれることが多い
-            contents = tc["hoverEvent"]["contents"]
-            if "name" in contents:
-                # nameキーの中身も再帰的に解析する
-                return text_component_to_plain_text(contents["name"])
-        return text
-    return ""
